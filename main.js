@@ -4,8 +4,16 @@
 $(document).ready(function(){
 
 	// Let the magic begin.
-	firebase.database().ref().set({
-		fact: "Dogs are cool!!!!!1."
+	
+	var database = firebase.database();
+	var foodField = document.getElementById('food-field');
+
+	$('#save-button').click(function(){
+		var food = foodField.value;
+		console.log(food);
+		database.ref('food/').push(food).then(function(){
+			console.log('Finisehd Pushing.')
+		});
 	});
 });
 
