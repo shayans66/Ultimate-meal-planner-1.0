@@ -1,4 +1,5 @@
 
+
 .site-header {
     background-color: rgba(0, 0, 0, .85);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -9,3 +10,11 @@
   color: #999;
   transition: ease-in-out color .15s;
 }
+
+body{
+    background-color: #B222;
+}
+h1 {
+        color: #310;
+}
+
