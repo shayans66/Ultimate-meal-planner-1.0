@@ -12,7 +12,7 @@ $(document).ready(function(){
 		var food = foodField.value;
 		console.log(food);
 		database.ref('food/').push(food).then(function(){
-			console.log('Finisehd Pushing.')
+			console.log('Finished Pushing.')
 		});
 	});
 });
