@@ -1,23 +1,23 @@
-// $(document).ready(function() {
-// 	var database = firebase.database();
-// 	var foodField = document.getElementById('food-field');
-//
-// 	// $('#save-button').click(function(){
-// 	// 	var food = foodField.value;
-// 	// 	console.log(food);
-// 	// 	database.ref('food/').push(food).then(function(){
-// 	// 		console.log('Finished Pushing.')
-// 	// 	});
-// 	// });
-// });
-
 const express = require('express');
 const bodyParser = require("body-parser");
 const axios = require('axios');
+const Vision = require('@google-cloud/vision');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const API_KEY = 'XUVPTddV3TNR8Bts0DR9JyY7Zftxiv7OgPa8OFsb';
 
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, 'uploads/')
+    }
+});
+
+const upload = multer({storage: storage});
+
 const app = express();
+const router = express.Router();
 const port = 6154;
 
 app.set('view engine', 'pug');
@@ -27,6 +27,34 @@ app.use(express.static('static'));
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.post('/vision', upload.single('media'), function (req, res) {
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, "./uploads/image.jpg");
+
+    const extension = path.extname(req.file.originalname).toLowerCase();
+    if (['.jpg', '.jpeg'].indexOf(extension) >= 0) {
+        fs.rename(tempPath, targetPath, async () => {
+            const client = new Vision.ImageAnnotatorClient();
+
+            const [result] = await client.labelDetection(targetPath);
+            const labels = result.labelAnnotations;
+
+            console.log(labels);
+
+            res.status(200).send({
+                success: true,
+                list: labels
+            })
+        });
+    } else {
+        fs.unlink(tempPath, () => {
+            res.status(403)
+                .contentType("text/plain")
+                .end("Only .jpg files are allowed!");
+        });
+    }
+});
 
 app.get('/', function (req, res) {
     res.render('index.pug')
@@ -80,7 +108,7 @@ app.get('/list', (req, res) => {
 });
 
 app.get('/foodDescription', (req, res) => {
-    axios.get('https://api.nal.usda.gov/ndb/V2/report/', {
+    axios.get('https://api.nal.usda.gov/ndb/V2/reports/', {
         params: {
             api_key: API_KEY,
             ndbno: req.query.foodId
@@ -96,6 +124,8 @@ app.get('/foodDescription', (req, res) => {
         res.status(400);
     });
 });
+
+module.exports = router;
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));
 

@@ -9,7 +9,7 @@ export default class App extends Component {
 
     getMeals(name) {
         let self = this;
-        fetch(`http://10.15.67.206:6154/list?q=${name}&max=10`)
+        fetch(`http://10.15.67.206:6154/list?food=${name}&max=10`)
             .then((response) => response.json())
             .then(function (json) {
                 let meals = [];
