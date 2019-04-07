@@ -145,6 +145,23 @@ app.get('/foodDescription', (req, res) => {
     });
 });
 
+app.post('/nutrition', (req, res) => {
+    foods = [];
+    req.body.foods.forEach((f) => {
+        console.log(f);
+    });
+    // axios.get('http://localhost:6154/list', {
+    //     params: {
+    //         food:req.query ,
+    //         max: 1
+    //     }
+    // }).then(res => {
+    //     console.log(res.data);
+    //     isFood = res.data.hasOwnProperty('list') && res.data.list.length > 0;
+    //     console.log(isFood);
+    // })
+});
+
 module.exports = router;
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));

@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry,
-    TextInput,
+    Button,
+    Image,
+    ImageBackground,
+    SafeAreaView,
     StyleSheet,
     Text,
-    View,
-    SafeAreaView,
-    Image,
-    Button,
-    TouchableOpacity
+    TextInput,
+    TouchableOpacity,
+    View
 } from 'react-native';
-import {Camera, Permissions, FileSystem} from 'expo';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+import {Camera, Permissions} from 'expo';
+import {createAppContainer, createStackNavigator} from 'react-navigation';
 import camIcon from './assets/camera.png';
+import foogle from './assets/fooglev4.png';
 
 class CreateMeal extends Component {
     static navigationOptions = {
@@ -38,11 +39,46 @@ class CreateMeal extends Component {
 
     render() {
         return (
-            <SafeAreaView style={{padding: 15}}>
-                <Button onPress={() => this.props.navigation.push('Add')} title={'Add Item'}/>
-                {this.state.items.map((i, index) => (
-                    <Text key={index}>{i}</Text>
-                ))}
+            <SafeAreaView style={{flex: 1}}>
+                <View style={{padding: 15, margin: 25, flex: 2}}>
+                    <View style={{flex: 1}}>
+                        <Button onPress={() => this.props.navigation.push('Add')}
+                                title={'Add Item'}/>
+                    </View>
+                    <View style={{borderBottomWidth: 0.5, borderBottomColor: '#bbb', marginVertical: 15}}/>
+                    <View style={{flex: 6}}>
+                        {this.state.items.map((i, index) => (
+                            <View key={index} style={{
+                                marginHorizontal: 16,
+                                marginVertical: 1,
+                                padding: 8,
+                                borderRadius: 8,
+                                backgroundColor: 'rgba(126,174,212,0.26)'
+                            }}>
+                                <Text>{i}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </View>
+                <View style={{
+                    flex: 1,
+                    backgroundColor: '#c9d439',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <TouchableOpacity
+                        style={{
+                            backgroundColor: '#fff',
+                            width: '75%',
+                            height: '25%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 16,
+                        }}
+                        onPress={() => this.props.navigation.push('Nutrition')}>
+                        <Text>{'Calculate Nutrition'}</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
         )
     }
@@ -60,6 +96,9 @@ class HomeScreen extends Component {
     render() {
         return (
             <SafeAreaView>
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Image source={foogle} style={{flex: 1}}/>
+                </View>
                 <Button onPress={() => this.props.navigation.push('Create')} title={'Create Meal'}/>
             </SafeAreaView>
         );
@@ -82,7 +121,7 @@ class AddItem extends Component {
             .then((response) => response.json())
             .then(function (json) {
                 let meals = [];
-                json.list.item.map(function (o) {
+                json.list.map(function (o) {
                     meals.push([o.name, o.ndbno]);
                 });
                 self.setState({'meals': meals});
@@ -120,7 +159,7 @@ class AddItem extends Component {
                                 onSubmitEditing={({nativeEvent}) => this.getMeals(nativeEvent.text)}
                             />
                         </View>
-                        <TouchableOpacity onPress={() => console.log(this.props.navigation.navigate('Cam'))}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Cam')}>
                             <Image source={camIcon} style={{width: 32, height: 32}}/>
                         </TouchableOpacity>
                     </View>
@@ -140,6 +179,50 @@ class AddItem extends Component {
                                 }}
                         />
                     ))}
+                </View>
+            </SafeAreaView>
+        );
+    }
+}
+
+class NutrionScreen extends Component {
+    static navigationOptions = {
+        title: 'Nutrition Facts'
+    };
+    state = {food: {}};
+
+    async componentDidMount() {
+    }
+
+    render() {
+        return (
+            <SafeAreaView>
+                <View style={{flex: 1}}>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Text style={{flex: 1}}>{'Nutrient'}</Text>
+                        <Text style={{flex: 1}}>{'Unit'}</Text>
+                        <Text style={{flex: 1}}>{'Value'}</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Text style={{flex: 1}}>Water</Text>
+                        <Text style={{flex: 1}}>g</Text>
+                        <Text style={{flex: 1}}>196</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Text style={{flex: 1}}>Protein</Text>
+                        <Text style={{flex: 1}}>g</Text>
+                        <Text style={{flex: 1}}>43</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Text style={{flex: 1}}>Total Fat</Text>
+                        <Text style={{flex: 1}}>g</Text>
+                        <Text style={{flex: 1}}>67</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row'}}>
+                        <Text style={{flex: 1}}>Sugars</Text>
+                        <Text style={{flex: 1}}>g</Text>
+                        <Text style={{flex: 1}}>267</Text>
+                    </View>
                 </View>
             </SafeAreaView>
         );
@@ -221,21 +304,8 @@ class CameraScreen extends Component {
                                 onPress={async () => {
                                     if (this.camera) {
                                         let photo = await this.camera.takePictureAsync();
-                                        const formData = new FormData();
-                                        formData.append('media', {
-                                            name: 'img.jpg',
-                                            type: photo.type,
-                                            uri: photo.uri.replace("file://", "")
-                                        });
-                                        fetch(`http://10.15.67.206:6154/vision`, {
-                                            method: 'POST',
-                                            body: formData
-                                        }).then((response) => response.json())
-                                            .then(json =>
-                                                this.props.navigation.navigate(
-                                                    'ChooseFood',
-                                                    {foods: json}))
-                                            .catch((err) => console.error(err));
+                                        this.props.navigation.navigate('Loading',
+                                            {photo: photo});
                                     }
                                 }}>
                                 <Text
@@ -251,6 +321,48 @@ class CameraScreen extends Component {
     }
 }
 
+class LoadingScreen extends Component {
+
+    async componentDidMount() {
+        const {navigation} = this.props;
+        let photo = navigation.getParam('photo');
+
+        const formData = new FormData();
+        formData.append('media', {
+            name: 'img.jpg',
+            type: photo.type,
+            uri: photo.uri.replace('file://', '')
+        });
+        fetch(`http://10.15.67.206:6154/vision`, {
+            method: 'POST',
+            body: formData
+        }).then((response) => response.json())
+            .then(json =>
+                this.props.navigation.navigate(
+                    'ChooseFood',
+                    {foods: json}))
+            .catch((err) => console.error(err));
+    }
+
+    render() {
+        const {navigation} = this.props;
+        let photo = navigation.getParam('photo');
+
+        console.log(photo.uri);
+        return (
+            <View style={{flex: 1, backgroundColor: 'rgba(187,187,187,0.55)'}}>
+                <ImageBackground source={{uri: photo.uri}}
+                                 style={{flex: 1, flexGrow: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{color: '#fff', textAlign: 'center', fontSize: 25}}>
+                        Loading...
+                    </Text>
+                </ImageBackground>
+            </View>
+        );
+    }
+
+}
+
 class ChooseScreen extends Component {
     static navigationOptions = {
         title: 'Camera'
@@ -259,6 +371,7 @@ class ChooseScreen extends Component {
     render() {
         const {navigation} = this.props;
         const foods = navigation.getParam('foods');
+        console.log(foods);
 
         let foodList;
         if (foods.list.length > 0)
@@ -269,7 +382,7 @@ class ChooseScreen extends Component {
                         }}
                         title={item['description']}
                         onPress={() => {
-                            this.props.navigation.navigate('Create',
+                            navigation.navigate('Create',
                                 {'name': item['description']});
                         }}
                 />
@@ -300,6 +413,7 @@ const MainNavigator = createStackNavigator({
     Create: CreateMeal,
     Add: AddItem,
     ChooseFood: ChooseScreen,
+    Nutrition: NutrionScreen
 });
 
 const RootStack = createStackNavigator(
@@ -309,6 +423,9 @@ const RootStack = createStackNavigator(
         },
         Cam: {
             screen: CameraScreen,
+        },
+        Loading: {
+            screen: LoadingScreen
         },
     },
     {
