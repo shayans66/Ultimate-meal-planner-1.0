@@ -12,9 +12,15 @@
 }
 
 body{
-    background-color: #B222;
+    background-image: url("http://www.allwhitebackground.com/images/2/2277.jpg");
+
+
 }
 h1 {
         color: #310;
 }
 
+.form-group {
+    padding-top: 100px;
+    margin: 1000 auto;
+}

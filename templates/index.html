@@ -59,17 +59,28 @@
         <div class="container">
             <div>
                 <form>
-                    <div class="row">
-                        <div class="col-6">
+                    <div>
+
+                        <!--<div class="col-3 row-3"></div>-->
+
+                        <div><!-- class="col-6 row-3">-->
+
                             <div class="form-group">
+
                                 <label for="food-field">Food </label>
                                 <input class="form-control" id="food-field" placeholder="Enter food">
+
+                                <button id="save-button" type="button" class="btn btn-primary">Save</button>
+
+                                <img class="image" src="{{ url_for('static', filename='foogle1.png') }}" alt="FOOGLE">
+
                             </div>
+
                         </div>
-                    </div>
+
                 </form>
             </div>
-            <button id="save-button" type="button" class="btn btn-primary">Save</button>
+
         </div>
     </main>
 
