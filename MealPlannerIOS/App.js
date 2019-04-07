@@ -95,11 +95,12 @@ class HomeScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView>
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Image source={foogle} style={{flex: 1}}/>
-                </View>
-                <Button onPress={() => this.props.navigation.push('Create')} title={'Create Meal'}/>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={{paddingTop: 50}}/>
+                <Image source={foogle} style={{padding: 30, height: 350, width: 350, alignSelf: 'center'}}/>
+                <View style={{paddingTop: 50}}/>
+                <Button onPress={() => this.props.navigation.push('Create')} title={'Create Meal'}
+                style={{padding:100}}/>
             </SafeAreaView>
         );
     }
@@ -196,32 +197,32 @@ class NutrionScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView>
-                <View style={{flex: 1}}>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={{flex: 1}}>{'Nutrient'}</Text>
-                        <Text style={{flex: 1}}>{'Unit'}</Text>
-                        <Text style={{flex: 1}}>{'Value'}</Text>
+            <SafeAreaView style={{flex: 1}}>
+                <View style={{marginHorizontal: 15, paddingHorizontal: 15, flex: 1}}>
+                    <View style={{paddingVertical: 15, flexDirection: 'row'}}>
+                        <Text style={{flex: 1, fontSize: 20}}>{'Nutrient'}</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>{'Unit'}</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>{'Value'}</Text>
                     </View>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={{flex: 1}}>Water</Text>
-                        <Text style={{flex: 1}}>g</Text>
-                        <Text style={{flex: 1}}>196</Text>
+                    <View style={{paddingVertical: 15, flexDirection: 'row'}}>
+                        <Text style={{flex: 1, fontSize: 20}}>Water</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>g</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>196</Text>
                     </View>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={{flex: 1}}>Protein</Text>
-                        <Text style={{flex: 1}}>g</Text>
-                        <Text style={{flex: 1}}>43</Text>
+                    <View style={{paddingVertical: 15, flexDirection: 'row'}}>
+                        <Text style={{flex: 1, fontSize: 20}}>Protein</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>g</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>43</Text>
                     </View>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={{flex: 1}}>Total Fat</Text>
-                        <Text style={{flex: 1}}>g</Text>
-                        <Text style={{flex: 1}}>67</Text>
+                    <View style={{paddingVertical: 15, flexDirection: 'row'}}>
+                        <Text style={{flex: 1, fontSize: 20}}>Total Fat</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>g</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>67</Text>
                     </View>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={{flex: 1}}>Sugars</Text>
-                        <Text style={{flex: 1}}>g</Text>
-                        <Text style={{flex: 1}}>267</Text>
+                    <View style={{paddingVertical: 15, flexDirection: 'row'}}>
+                        <Text style={{flex: 1, fontSize: 20}}>Sugars</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>g</Text>
+                        <Text style={{flex: 1, fontSize: 20}}>267</Text>
                     </View>
                 </View>
             </SafeAreaView>
