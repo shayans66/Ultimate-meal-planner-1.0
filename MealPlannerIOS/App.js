@@ -14,9 +14,61 @@ import {Camera, Permissions, FileSystem} from 'expo';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import camIcon from './assets/camera.png';
 
+class CreateMeal extends Component {
+    static navigationOptions = {
+        title: 'Create a Meal'
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {items: []};
+        this.props.navigation.addListener(
+            'willFocus',
+            () => {
+                const {navigation} = this.props;
+                const name = navigation.getParam('name', '');
+                navigation.setParams({});
+
+                if (name !== '')
+                    this.setState({items: this.state.items.concat(name)});
+
+            }
+        );
+    }
+
+    render() {
+        return (
+            <SafeAreaView style={{padding: 15}}>
+                <Button onPress={() => this.props.navigation.push('Add')} title={'Add Item'}/>
+                {this.state.items.map((i, index) => (
+                    <Text key={index}>{i}</Text>
+                ))}
+            </SafeAreaView>
+        )
+    }
+}
+
 class HomeScreen extends Component {
     static navigationOptions = {
         title: 'Home'
+    };
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <SafeAreaView>
+                <Button onPress={() => this.props.navigation.push('Create')} title={'Create Meal'}/>
+            </SafeAreaView>
+        );
+    }
+}
+
+class AddItem extends Component {
+    static navigationOptions = {
+        title: 'Add Item'
     };
 
     constructor(props) {
@@ -83,7 +135,8 @@ class HomeScreen extends Component {
                                 }}
                                 title={item[0]}
                                 onPress={() => {
-                                    console.log(item[1]);
+                                    this.props.navigation.navigate('Create',
+                                        {'name': item[0]})
                                 }}
                         />
                     ))}
@@ -216,12 +269,13 @@ class ChooseScreen extends Component {
                         }}
                         title={item['description']}
                         onPress={() => {
-                            console.log(item['description']);
+                            this.props.navigation.navigate('Create',
+                                {'name': item['description']});
                         }}
                 />
             ));
         else
-            foodList = <Text>No food detected. Try again.</Text>;
+            foodList = <Text>No food detected. Try again taking another picture or searching instead.</Text>;
 
         return (
             <SafeAreaView style={{flex: 3}}>
@@ -243,7 +297,9 @@ const styles = StyleSheet.create({
 
 const MainNavigator = createStackNavigator({
     Home: HomeScreen,
-    ChooseFood: ChooseScreen
+    Create: CreateMeal,
+    Add: AddItem,
+    ChooseFood: ChooseScreen,
 });
 
 const RootStack = createStackNavigator(
