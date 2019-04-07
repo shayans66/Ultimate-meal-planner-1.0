@@ -40,11 +40,26 @@ app.post('/vision', upload.single('media'), function (req, res) {
             const [result] = await client.labelDetection(targetPath);
             const labels = result.labelAnnotations;
 
-            console.log(labels);
-
             res.status(200).send({
                 success: true,
-                list: labels
+                list: labels.filter(async (l) => {
+                    let isFood = false;
+                    await axios.get('http://localhost:6154/list', {
+                        params: {
+                            food: l['description'],
+                            max: 1
+                        }
+                    }).then(res => {
+                        console.log(res.data);
+                        isFood = res.data.hasOwnProperty('list') && res.data.list.length > 0;
+                        console.log(isFood);
+                    })
+                        .catch(err => console.error(err));
+                    console.log(isFood);
+                    if (isFood)
+                        console.log(l);
+                    return isFood;
+                })
             })
         });
     } else {
@@ -97,9 +112,14 @@ app.get('/list', (req, res) => {
             ds: 'Standard Reference'
         }
     }).then(function (response) {
+        let list;
+        if (response.data.hasOwnProperty('list'))
+            list = response.data.list.item;
+        else
+            list = [];
         res.status(200).send({
             success: true,
-            list: response.data.list
+            list: list
         })
     }).catch(function (response) {
         console.error(response);
