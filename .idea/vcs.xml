@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/ios/MealPlanner/.build/checkouts/Alamofire.git--979056482092032054" vcs="Git" />
   </component>
 </project>
