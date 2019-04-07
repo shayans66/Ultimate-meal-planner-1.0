@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+<!-- <img src="https://www.computerhope.com/cdn/computer-hope.jpg" width="200" height="40" alt="Computer Hope"> -->
+
 <html lang="en">
     <head>
         <!--
@@ -34,7 +37,10 @@
 
 <body>
 
-    <!--<h1> SHAYAN IS COOL</h1> -->
+
+
+
+
 
     <nav class="site-header sticky-top py-1">
         <div class="container d-flex flex-column flex-md-row justify-content-between">
@@ -60,19 +66,24 @@
             <div>
                 <form>
                     <div>
+                        <img class="image" src="{{ url_for('static', filename='foogle1.png') }}" width="100" height="130" alt="FOOGLE">
 
+<!--class="pagination-centered"-->
+
+                        <h1 class = "maintitle"> Foogle Meal Planner</h1>
                         <!--<div class="col-3 row-3"></div>-->
 
                         <div><!-- class="col-6 row-3">-->
 
                             <div class="form-group">
 
+
                                 <label for="food-field">Food </label>
                                 <input class="form-control" id="food-field" placeholder="Enter food">
 
                                 <button id="save-button" type="button" class="btn btn-primary">Save</button>
 
-                                <img class="image" src="{{ url_for('static', filename='foogle1.png') }}" alt="FOOGLE">
+
 
                             </div>
 
